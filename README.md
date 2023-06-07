@@ -1,2 +1,1 @@
-# uruacuBotV2
-Bot for Uruacu v2
+# Uruacu Bot - v2
