@@ -1,4 +1,4 @@
-blackList = [
+black_list = [
     "UruacuBOT",
     "FerryGustavo",
     "Mary69800849",
@@ -22,11 +22,12 @@ blackList = [
     "Matheus00733039",
 ]
 
+query = "Uruaçu OR uruaçu OR Uruacu OR uruacu -cunhau"
 
 color = {
     "end": "\033[0m",  # ends the actual color
-    "fail": "\033[91m",  # red color for failing
-    "cyan": "\033[96m",  # opening cyan color
-    "green": "\033[92m",  # opening green color
-    "warning": "\033[93m",  # opening yellow color
+    "red": "\033[91m",  # starts red color (fail)
+    "cyan": "\033[96m",  # starts cyan color
+    "green": "\033[92m",  # starts green color
+    "warning": "\033[93m", # starts yellow color
 }
