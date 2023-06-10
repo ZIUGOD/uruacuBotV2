@@ -1,4 +1,4 @@
-black_list = [
+black_list = [  # ignored profiles for bad behavion
     "UruacuBOT",
     "FerryGustavo",
     "Mary69800849",
@@ -22,12 +22,14 @@ black_list = [
     "Matheus00733039",
 ]
 
+# words used for searches, filtering 'cunhau'
 query = "Uruaçu OR uruaçu OR Uruacu OR uruacu -cunhau"
 
+# colors for a better output in terminal
 color = {
     "end": "\033[0m",  # ends the actual color
     "red": "\033[91m",  # starts red color (fail)
     "cyan": "\033[96m",  # starts cyan color
     "green": "\033[92m",  # starts green color
-    "warning": "\033[93m", # starts yellow color
+    "warning": "\033[93m",  # starts yellow color
 }
