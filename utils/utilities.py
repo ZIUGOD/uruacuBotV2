@@ -7,11 +7,6 @@ import threading
 
 env_vars = dotenv_values(".env")
 
-# variables for threads control
-running_threads = 0
-max_threads = 3
-lock = threading.Lock()
-
 
 # function to clear the terminal. Works on Linux, Windows or MacOS
 def clear():
@@ -51,24 +46,12 @@ def create_tweet(api, message: str, image_path=None):
 
 
 # function to validate a tweet and retweet it if
-def process_tweet(api, name, tweet_id, text):
+def process_tweet(api, name, tweet_id):
     if name not in black_list:
         try:
             api.retweet(tweet_id)
             api.create_favorite(tweet_id)
 
-            print(
-                color["cyan"]
-                + f"@UruacuBOT"
-                + color["end"]
-                + " found a tweet by "
-                + color["cyan"]
-                + f"@{name}"
-                + color["end"]
-                + f":\n{text}\n\n"
-                + "Waiting 10 minutes..."
-            )
-            sleep(600)  # waiting 10 minutes after a new RT
             return True
         except:
             return False
@@ -76,26 +59,33 @@ def process_tweet(api, name, tweet_id, text):
 
 # this method makes a new search when its called.
 def search_tweets(api):
+    found = False
     global running_threads
-    for tweet in tweepy.Cursor(
+    search = tweepy.Cursor(
         api.search_tweets,
         q=query,
         result_type="recent",
-    ).items(5):
-        print("Tweet: " + tweet.text)
-        with lock:
-            if running_threads >= max_threads:
-                # wait for a thread to finish before continuing
-                continue
+    ).items(5)
+    for tweet in search:
+        found = process_tweet(api, tweet.user.screen_name, tweet.id)
 
-            # starts a new thread to process the tweet
-            print("Iniciando nova thread.")
-            thread = threading.Thread(
-                target=process_tweet,
-                args=(api, tweet.user.screen_name, tweet.id, tweet.text),
-            )  # configuring a new thread
-            thread.start()
-            running_threads += 1
+        if found:
+            print(
+                color["cyan"]
+                + f"@UruacuBOT"
+                + color["end"]
+                + " found a tweet by "
+                + color["cyan"]
+                + f"@{tweet.user.screen_name}"
+                + color["end"]
+                + f":\n{tweet.text}\n\n"
+                + "Tweet retweeted and favorited! Let's wait 10 minutes..."
+            )
+            sleep(600)  # waiting 10 minutes
+            break  # breaking the point to restart after a new RT
+        else:
+            print("Próximo...")
+            pass
 
 
 # method to start the bot
@@ -106,6 +96,14 @@ def start():
     clear()
 
     api = auth_api()
+    try:
+        api.verify_credentials()
+        print(color["green"] + "Credentials OK!" + color["end"])
+    except Exception as error:
+        print(color["red"] + f"Error: {error}")
+
+    sleep(1)
+    clear()
 
     while True:
         search_tweets(api)
@@ -113,7 +111,4 @@ def start():
         # pause to avoid too many requests
         print("Waiting 15 seconds")
         sleep(15)
-
-        # restart threads
-        with lock:
-            running_threads = 0
+        clear()
