@@ -1,4 +1,4 @@
-black_list = [  # ignored profiles for bad behavion
+black_list = [  # ignored profiles for bad behavior
     "UruacuBOT",
     "FerryGustavo",
     "Mary69800849",
@@ -29,7 +29,8 @@ query = "Uruaçu OR uruaçu OR Uruacu OR uruacu -cunhau"
 color = {
     "end": "\033[0m",  # ends the actual color
     "red": "\033[91m",  # starts red color (fail)
+    "bold": "\033[1m",  # starts the bold style
     "cyan": "\033[96m",  # starts cyan color
     "green": "\033[92m",  # starts green color
-    "warning": "\033[93m",  # starts yellow color
+    "yellow": "\033[93m",  # starts yellow color
 }
