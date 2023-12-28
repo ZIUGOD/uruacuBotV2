@@ -1,26 +1,36 @@
-blackList = [
-    "UruacuBOT",
-    "FerryGustavo",
-    "Mary69800849",
-    "AnaMariolli",
-    "Edbeneton",
-    "VeronicaRochedo",
-    "RafinhaFiuzza",
-    "Tropadastremmm",
-    "PaoDeQueijoBOT",
-    "BolhaDevs",
-    "quarentena_bot",
-    "divulgasmaistop",
-    "Amigosecretosf",
-    "beto45709148",
-    "PauloHe44677428",
-    "Raimund63103867",
-    "Biel56392371",
-    "souza_8909",
-    "vemesposa",
-    "Fabiano43040996",
-    "Matheus00733039",
-]
+from os import system, name
+from time import sleep
+
+
+def clear_terminal():
+    """
+    Clears the terminal screen based on the operating system.
+
+    Returns:
+        None
+    """
+    system("cls" if name == "nt" else "clear")
+
+
+def wait_time(duration_in_seconds: int, allow_skip: bool = False):
+    """
+    Pauses execution for the specified duration, providing a countdown display.
+
+    The terminal screen is cleared upon reaching 0 seconds if ``allow_skip`` is True.
+    """
+    if not isinstance(duration_in_seconds, int) or duration_in_seconds < 0:
+        raise ValueError("Duration must be a non-negative integer.")
+
+    try:
+        for i in reversed(range(duration_in_seconds)):
+            print(f"{color['yellow']}{i + 1}s remaining.{color['end']}", end="\r")
+            sleep(0.99)
+
+            if allow_skip and i == 0:
+                clear_terminal()
+
+    except KeyboardInterrupt:
+        print("\nWaiting interrupted. Exiting...")
 
 
 color = {
